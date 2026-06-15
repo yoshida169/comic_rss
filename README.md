@@ -1,12 +1,48 @@
-# React + Vite
+# Comic RSS
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+React + TypeScript + Vite で構築されたコミック RSS リーダーです。
 
-Currently, two official plugins are available:
+## 必要環境
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Node.js 18 以上
+- npm
 
-## Expanding the ESLint configuration
+## セットアップ
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+```bash
+# 依存パッケージのインストール
+npm install
+```
+
+## 起動方法
+
+### 開発サーバー
+
+```bash
+npm run dev
+```
+
+起動後、ブラウザで http://localhost:5173 を開いてください。ファイル変更時にホットリロードが有効です。
+
+### 本番ビルド
+
+```bash
+npm run build
+```
+
+`dist/` ディレクトリに成果物が出力されます。
+
+### ビルド結果のプレビュー
+
+```bash
+npm run preview
+```
+
+本番ビルドをローカルで確認できます。
+
+## その他のコマンド
+
+```bash
+# ESLint による静的解析
+npm run lint
+```
