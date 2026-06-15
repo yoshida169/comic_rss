@@ -1,20 +1,13 @@
 import { useState } from 'react'
-import { supabase } from '../lib/supabase'
 
 export default function Message() {
   const [input, setInput] = useState('')
+  const [messages, setMessages] = useState<string[]>([])
 
-  const handleSendMessage = async () => {
-    // inputの値をsupabaseのmessagesテーブルにメッセージを追加
-    const { data, error } = await supabase.from('messages').insert({
-      message: input,
-    })
-    if (error) {
-      console.error(error)
-    } else {
-      console.log(data)
-      setInput('') // 送信後にinputをクリア
-    }
+  const handleSendMessage = () => {
+    if (!input.trim()) return
+    setMessages((prev) => [...prev, input])
+    setInput('')
   }
 
   return (
@@ -24,12 +17,10 @@ export default function Message() {
         value={input}
         onChange={(e) => setInput(e.target.value)}
       />
-      <button
-        onClick={handleSendMessage}
-      >
-        送信
-      </button>
-      <p>Message1</p>
+      <button onClick={handleSendMessage}>送信</button>
+      {messages.map((msg, i) => (
+        <p key={i}>{msg}</p>
+      ))}
     </div>
   )
-} 
+}
