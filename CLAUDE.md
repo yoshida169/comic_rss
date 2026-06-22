@@ -10,6 +10,10 @@ npm run build    # プロダクションビルド
 npm run lint     # ESLint実行
 npm run preview  # ビルド成果物のプレビューサーバー起動
 npx tsc --noEmit # 型チェックのみ実行（ビルドなし）
+
+# Backend (Go)
+cd backend && go run .  # バックエンドサーバー起動 (http://localhost:8080)
+cd backend && go build  # バックエンドビルド
 ```
 
 ## Architecture
@@ -28,3 +32,9 @@ npx tsc --noEmit # 型チェックのみ実行（ビルドなし）
 `tsconfig.json` で `strict: true`、`noUnusedLocals: true`、`noUnusedParameters: true` が有効。未使用の変数・パラメータはコンパイルエラーになる。
 
 ESLintは `.js`/`.jsx` ファイルのみ対象（`.ts`/`.tsx` はTypeScriptコンパイラが型チェックを担う）。
+
+## Backend (Go)
+
+`backend/` ディレクトリにGoバックエンドを配置。標準ライブラリの `net/http` を使用。
+
+- `backend/main.go` — エントリーポイント。HTTPサーバーをポート8080で起動。
