@@ -1,0 +1,16 @@
+services:
+  db:
+    image: postgres:18
+    container_name: comic_rss_db
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_DB: comic_rss
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - ./docker/db/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - comic_rss_data:/var/lib/postgresql/data
+
+volumes:
+  comic_rss_data:
