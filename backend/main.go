@@ -1,21 +1,18 @@
 package main
 
 import (
-	"fmt"
+	"io"
 	"log"
 	"net/http"
 )
 
 func main() {
-	mux := http.NewServeMux()
-
-	mux.HandleFunc("GET /health", func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Set("Content-Type", "application/json")
-		fmt.Fprintf(w, `{"status":"ok"}`)
-	})
-
-	log.Println("Server starting on :8080")
-	if err := http.ListenAndServe(":8080", mux); err != nil {
-		log.Fatal(err)
+	helloHandler := func(w http.ResponseWriter, req *http.Request) {
+		io.WriteString(w, "Hello\n")
 	}
+
+	http.HandleFunc("/", helloHandler)
+
+	log.Println("server start at port 8080")
+	log.Fatal(http.ListenAndServe(":8080", nil))
 }
