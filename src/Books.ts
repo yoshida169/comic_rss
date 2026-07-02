@@ -1,4 +1,11 @@
-const books = [
+export type Book = {
+  isbn: string;
+  title: string;
+  price: number;
+  summary: string;
+};
+
+const books: Book[] = [
   {
     isbn: 'aaa',
     title: '本のタイトル',

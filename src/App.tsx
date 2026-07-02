@@ -6,14 +6,16 @@ import ForList from './ForList'
 
 function App() {
   return (
-    <ForList src={books} />
-    <div className="App">
-      <MyHello myName="太郎" />
-      <button type="submit" onClick={() => getComics()}>
-        DB通信
-      </button>
-      <StateBasic init={0} />
-    </div>
+    <>
+      <ForList src={books} />
+      <div className="App">
+        <MyHello myName="太郎" />
+        <button type="submit" onClick={() => getComics()}>
+          DB通信
+        </button>
+        <StateBasic init={0} />
+      </div>
+    </>
   )
 }
 
