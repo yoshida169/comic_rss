@@ -1,5 +1,6 @@
 import './App.css'
 import MyHello from './MyHello'
+import StateBasic from './StateBasic'
 
 function App() {
   return (
@@ -8,6 +9,7 @@ function App() {
       <button type="submit" onClick={() => getComics()}>
         DB通信
       </button>
+      <StateBasic init={0} />
     </div>
   )
 }
