@@ -18,14 +18,14 @@ func PostArticleHandler(w http.ResponseWriter, req *http.Request) {
 	io.WriteString(w, "Posting Article...\n")
 }
 
-func ArticleListHandler(w http.ResponseWriter, req *http.Request) {
-	io.WriteString(w, "Article List\n")
-}
-
 func ArticleDetailHandler(w http.ResponseWriter, req *http.Request) {
 	articleID := 1
 	resString := fmt.Sprintf("Article No.%d\n", articleID)
 	io.WriteString(w, resString)
+}
+
+func ArticleListHandler(w http.ResponseWriter, req *http.Request) {
+	io.WriteString(w, "Article List\n")
 }
 
 func PostNiceHandler(w http.ResponseWriter, req *http.Request) {
