@@ -8,7 +8,7 @@ import (
 	"github.com/gorilla/mux"
 )
 
-func main() {
+func newRouter() http.Handler {
 	r := mux.NewRouter()
 
 	r.HandleFunc("/hello", handlers.HelloHandler)
@@ -18,6 +18,10 @@ func main() {
 	r.HandleFunc("/article/nice", handlers.PostNiceHandler)
 	r.HandleFunc("/comment", handlers.PostCommentHandler)
 
+	return r
+}
+
+func main() {
 	log.Println("server start at port 8080")
-	log.Fatal(http.ListenAndServe(":8080", r))
+	log.Fatal(http.ListenAndServe(":8080", newRouter()))
 }
