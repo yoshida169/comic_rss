@@ -1,0 +1,21 @@
+name: Test
+
+on:
+  pull_request:
+    paths:
+      - backend/**/*.go
+      - backend/go.mod
+      - backend/go.sum
+
+jobs:
+  backend:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-go@v7
+        with:
+          go-version-file: backend/go.mod
+      - run: go test ./...
