@@ -7,11 +7,7 @@ import (
 )
 
 func HelloHandler(w http.ResponseWriter, req *http.Request) {
-	if req.Method == http.MethodGet {
-		io.WriteString(w, "Hello world\n")
-	} else {
-		http.Error(w, "Invalid Method", http.StatusMethodNotAllowed)
-	}
+	io.WriteString(w, "Hello world\n")
 }
 
 func PostArticleHandler(w http.ResponseWriter, req *http.Request) {
@@ -23,13 +19,9 @@ func PostArticleHandler(w http.ResponseWriter, req *http.Request) {
 }
 
 func ArticleDetailHandler(w http.ResponseWriter, req *http.Request) {
-	if req.Method == http.MethodGet {
-		articleID := 1
-		resString := fmt.Sprintf("Article No.%d\n", articleID)
-		io.WriteString(w, resString)
-	} else {
-		http.Error(w, "Invalid Method", http.StatusMethodNotAllowed)
-	}
+	articleID := 1
+	resString := fmt.Sprintf("Article No.%d\n", articleID)
+	io.WriteString(w, resString)
 }
 
 func ArticleListHandler(w http.ResponseWriter, req *http.Request) {

@@ -11,10 +11,10 @@ import (
 func newRouter() http.Handler {
 	r := mux.NewRouter()
 
-	r.HandleFunc("/hello", handlers.HelloHandler)
+	r.HandleFunc("/hello", handlers.HelloHandler).Methods(http.MethodGet)
 	r.HandleFunc("/article", handlers.PostArticleHandler)
 	r.HandleFunc("/article/list", handlers.ArticleListHandler)
-	r.HandleFunc("/article/1", handlers.ArticleDetailHandler)
+	r.HandleFunc("/article/{id: [0-9]+}", handlers.ArticleDetailHandler).Methods(http.MethodGet)
 	r.HandleFunc("/article/nice", handlers.PostNiceHandler)
 	r.HandleFunc("/comment", handlers.PostCommentHandler)
 
