@@ -8,3 +8,13 @@ type Comment struct {
 	Message   string
 	CreatedAt time.Time
 }
+
+type Article struct {
+	ID          int
+	Title       string
+	Contents    string
+	UserName    string
+	NiceNum     int
+	CommentList []Comment
+	CreatedAt   time.Time
+}
