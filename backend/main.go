@@ -2,6 +2,7 @@ package main
 
 import (
 	"comic-rss-backend/handlers"
+	"encoding/json"
 	"fmt"
 	"net/http"
 	"time"
@@ -65,5 +66,11 @@ func main() {
 		CreatedAt:   time.Now(),
 	}
 
-	fmt.Printf("%+v\n", article)
+	jsonData, err := json.Marshal(article)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	fmt.Printlf("%s\n", jsonData)
 }
