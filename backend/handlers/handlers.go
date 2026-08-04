@@ -1,6 +1,8 @@
 package handlers
 
 import (
+	"comic-rss-backend/models"
+	"encoding/json"
 	"fmt"
 	"io"
 	"net/http"
@@ -15,7 +17,13 @@ func HelloHandler(w http.ResponseWriter, req *http.Request) {
 
 func PostArticleHandler(w http.ResponseWriter, req *http.Request) {
 	if req.Method == http.MethodPost {
-		io.WriteString(w, "Posting Article...\n")
+		article := models.Article1
+		jsonData, err := json.Marshal(article)
+		if err != nil {
+			http.Error(w, "fail to encode json\n", http.StatusInternalServerError)
+		}
+
+		w.Write(jsonData)
 	} else {
 		http.Error(w, "Invalid Method", http.StatusMethodNotAllowed)
 	}
@@ -46,8 +54,15 @@ func ArticleListHandler(w http.ResponseWriter, req *http.Request) {
 		page = 1
 	}
 
-	resString := fmt.Sprintf("Article list (page %d)\n", page)
-	io.WriteString(w, resString)
+	articleList := []models.Article{models.Article1, models.Article2}
+	jsonData, err := json.Marshal(articleList)
+	if err != nil {
+		errMsg := fmt.Sprintf("fail to encode json (page %d)\n", page)
+		http.Error(w, errMsg, http.StatusInternalServerError)
+		return
+	}
+
+	w.Write(jsonData)
 }
 
 func PostNiceHandler(w http.ResponseWriter, req *http.Request) {
