@@ -75,12 +75,21 @@ func ArticleListHandler(w http.ResponseWriter, req *http.Request) {
 	w.Write(jsonData)
 }
 
+// POST /article/nice
 func PostNiceHandler(w http.ResponseWriter, req *http.Request) {
 	if req.Method == http.MethodPost {
 		io.WriteString(w, "Posting Nice...\n")
 	} else {
 		http.Error(w, "Invalid Method", http.StatusMethodNotAllowed)
+		return
 	}
+	article := models.Article1
+	jsonData, err := json.Marshal(article)
+	if err != nil {
+		http.Error(w, "fail to encode json\n" http.StatusInternalServerError)
+	}
+
+	w.Write(jsonData)
 }
 
 func PostCommentHandler(w http.ResponseWriter, req *http.Request) {
@@ -89,4 +98,13 @@ func PostCommentHandler(w http.ResponseWriter, req *http.Request) {
 	} else {
 		http.Error(w, "Invalid Method", http.StatusMethodNotAllowed)
 	}
+
+	comment := models.Comment1
+	jsonData, err := json.Marshal(comment)
+	if err != nil {
+		http.Error(w, "fail to encode json\n", http.StatusInternalServerError)
+		return
+	}
+
+	w.Write(jsonData)
 }
