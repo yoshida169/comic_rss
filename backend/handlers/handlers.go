@@ -15,18 +15,18 @@ func HelloHandler(w http.ResponseWriter, req *http.Request) {
 	io.WriteString(w, "Hello world\n")
 }
 
+// POST /article
 func PostArticleHandler(w http.ResponseWriter, req *http.Request) {
-	if req.Method == http.MethodPost {
-		article := models.Article1
-		jsonData, err := json.Marshal(article)
-		if err != nil {
+	if req.Method == http.MethodPost
+		
+		var reqBodybuffer []byte
+		if _, err := req.Body.Read(reqBodybuffer); !errors.Is(err, io.EOF) {
 			http.Error(w, "fail to encode json\n", http.StatusInternalServerError)
+			return
 		}
 
+		defer req.Body.Close()
 		w.Write(jsonData)
-	} else {
-		http.Error(w, "Invalid Method", http.StatusMethodNotAllowed)
-	}
 }
 
 // GET /article/:id
