@@ -16,17 +16,24 @@ func HelloHandler(w http.ResponseWriter, req *http.Request) {
 }
 
 // POST /article
-func PostArticleHandler(w http.ResponseWriter, req *http.Request) {
-	if req.Method == http.MethodPost
-		
-		var reqBodybuffer []byte
-		if _, err := req.Body.Read(reqBodybuffer); !errors.Is(err, io.EOF) {
-			http.Error(w, "fail to encode json\n", http.StatusInternalServerError)
-			return
-		}
+func PostArticleHandler(w http.ResponseWriter, req *http.Request) {		
+	length, err := strconv.Atoi(req.Header.Get("Content-Length"))
+	if err != nil {
+		http.Error(w, "cannot get content length\n", http.StatusBadRequest)
+		return
+	}
+	reqBodybuffer := make([]byte, length)
+	
+	if _, err := req.Body.Read(reqBodybuffer); !errors.Is(err, io.EOF) {
+		http.Error(w, "fail to encode json\n", http.StatusInternalServerError)
+		return
+	}
 
-		defer req.Body.Close()
-		w.Write(jsonData)
+	defer req.Body.Close()
+
+	article := models.Article1
+	jsonData, err := json.Marshal(article)
+	w.Write(jsonData)
 }
 
 // GET /article/:id
