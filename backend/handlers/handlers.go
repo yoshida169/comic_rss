@@ -29,16 +29,26 @@ func PostArticleHandler(w http.ResponseWriter, req *http.Request) {
 	}
 }
 
+// GET /article/:id
 func ArticleDetailHandler(w http.ResponseWriter, req *http.Request) {
 	articleID, err := strconv.Atoi(mux.Vars(req)["id"])
 	if err != nil {
 		http.Error(w, "Invalid query parameter", http.StatusBadRequest)
 		return
 	}
-	resString := fmt.Sprintf("Article No.%d\n", articleID)
-	io.WriteString(w, resString)
+
+	article := models.Article1
+	jsonData, err := json.Marshal(article)
+
+	if err != nil {
+		errMsg := fmt.Sprintf("fail to encode json (articleID %d)\n", articleID)
+		http.Error(w, errMsg, http.StatusInternalServerError)
+	}
+
+	w.Write(jsonData)
 }
 
+// GET /article/list
 func ArticleListHandler(w http.ResponseWriter, req *http.Request) {
 	queryMap := req.URL.Query()
 
