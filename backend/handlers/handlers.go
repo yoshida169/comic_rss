@@ -3,7 +3,6 @@ package handlers
 import (
 	"comic-rss-backend/models"
 	"encoding/json"
-	"errors"
 	"fmt"
 	"io"
 	"net/http"
@@ -18,33 +17,29 @@ func HelloHandler(w http.ResponseWriter, req *http.Request) {
 
 // POST /article
 func PostArticleHandler(w http.ResponseWriter, req *http.Request) {
-	length, err := strconv.Atoi(req.Header.Get("Content-Length"))
-	if err != nil {
-		http.Error(w, "cannot get content length\n", http.StatusBadRequest)
-		return
-	}
-	reqBodybuffer := make([]byte, length)
+	// length, err := strconv.Atoi(req.Header.Get("Content-Length"))
+	// if err != nil {
+	// 	http.Error(w, "cannot get content length\n", http.StatusBadRequest)
+	// 	return
+	// }
+	// reqBodybuffer := make([]byte, length)
 
-	if _, err := req.Body.Read(reqBodybuffer); !errors.Is(err, io.EOF) {
-		http.Error(w, "fail to encode json\n", http.StatusInternalServerError)
-		return
-	}
+	// if _, err := req.Body.Read(reqBodybuffer); !errors.Is(err, io.EOF) {
+	// 	http.Error(w, "fail to encode json\n", http.StatusInternalServerError)
+	// 	return
+	// }
 
-	defer req.Body.Close()
+	// defer req.Body.Close()
 
 	var reqArticle models.Article
-	if err := json.Unmarshal(reqBodybuffer, &reqArticle); err != nil {
+	if err := json.NewDecoder(req.Body).Decode(&reqArticle); err != nil {
 		http.Error(w, "fail to decode json\n", http.StatusBadRequest)
 		return
 	}
-	article := reqArticle
-	jsonData, err := json.Marshal(article)
-	if err != nil {
-		http.Error(w, "fail to encode json\n", http.StatusInternalServerError)
-		return
-	}
 
-	w.Write(jsonData)
+	article := reqArticle
+
+	json.NewEncoder(w).Encode(article)
 }
 
 // GET /article/:id
