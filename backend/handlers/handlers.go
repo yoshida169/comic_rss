@@ -46,14 +46,6 @@ func ArticleListHandler(w http.ResponseWriter, req *http.Request) {
 
 	articleList := []models.Article{models.Article1, models.Article2}
 	json.NewDecoder(w).Encode(articleList)
-	// jsonData, err := json.Marshal(articleList)
-	// if err != nil {
-	// 	errMsg := fmt.Sprintf("fail to encode json (page %d)\n", page)
-	// 	http.Error(w, errMsg, http.StatusInternalServerError)
-	// 	return
-	// }
-
-	// w.Write(jsonData)
 }
 
 // GET /article/:id
