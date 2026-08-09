@@ -28,25 +28,6 @@ func PostArticleHandler(w http.ResponseWriter, req *http.Request) {
 	json.NewEncoder(w).Encode(article)
 }
 
-// GET /article/:id
-func ArticleDetailHandler(w http.ResponseWriter, req *http.Request) {
-	articleID, err := strconv.Atoi(mux.Vars(req)["id"])
-	if err != nil {
-		http.Error(w, "Invalid query parameter", http.StatusBadRequest)
-		return
-	}
-
-	article := models.Article1
-	jsonData, err := json.Marshal(article)
-
-	if err != nil {
-		errMsg := fmt.Sprintf("fail to encode json (articleID %d)\n", articleID)
-		http.Error(w, errMsg, http.StatusInternalServerError)
-	}
-
-	w.Write(jsonData)
-}
-
 // GET /article/list
 func ArticleListHandler(w http.ResponseWriter, req *http.Request) {
 	queryMap := req.URL.Query()
@@ -64,11 +45,31 @@ func ArticleListHandler(w http.ResponseWriter, req *http.Request) {
 	}
 
 	articleList := []models.Article{models.Article1, models.Article2}
-	jsonData, err := json.Marshal(articleList)
+	json.NewDecoder(w).Encode(articleList)
+	// jsonData, err := json.Marshal(articleList)
+	// if err != nil {
+	// 	errMsg := fmt.Sprintf("fail to encode json (page %d)\n", page)
+	// 	http.Error(w, errMsg, http.StatusInternalServerError)
+	// 	return
+	// }
+
+	// w.Write(jsonData)
+}
+
+// GET /article/:id
+func ArticleDetailHandler(w http.ResponseWriter, req *http.Request) {
+	articleID, err := strconv.Atoi(mux.Vars(req)["id"])
 	if err != nil {
-		errMsg := fmt.Sprintf("fail to encode json (page %d)\n", page)
-		http.Error(w, errMsg, http.StatusInternalServerError)
+		http.Error(w, "Invalid query parameter", http.StatusBadRequest)
 		return
+	}
+
+	article := models.Article1
+	jsonData, err := json.Marshal(article)
+
+	if err != nil {
+		errMsg := fmt.Sprintf("fail to encode json (articleID %d)\n", articleID)
+		http.Error(w, errMsg, http.StatusInternalServerError)
 	}
 
 	w.Write(jsonData)
