@@ -3,8 +3,8 @@ package handlers
 import (
 	"comic-rss-backend/models"
 	"encoding/json"
-	"fmt"
 	"io"
+	"log"
 	"net/http"
 	"strconv"
 
@@ -44,6 +44,8 @@ func ArticleListHandler(w http.ResponseWriter, req *http.Request) {
 		page = 1
 	}
 
+	log.Println(page)
+
 	articleList := []models.Article{models.Article1, models.Article2}
 	json.NewDecoder(w).Encode(articleList)
 }
@@ -56,15 +58,10 @@ func ArticleDetailHandler(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
+	log.Println(articleID)
+
 	article := models.Article1
-	jsonData, err := json.Marshal(article)
-
-	if err != nil {
-		errMsg := fmt.Sprintf("fail to encode json (articleID %d)\n", articleID)
-		http.Error(w, errMsg, http.StatusInternalServerError)
-	}
-
-	w.Write(jsonData)
+	json.NewEncoder(w).Encode(article)
 }
 
 // POST /article/nice
