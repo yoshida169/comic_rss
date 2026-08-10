@@ -34,6 +34,7 @@ func PostNiceHandler(w http.ResponseWriter, req *http.Request) {
 
 	if err := json.NewDecoder(req.Body).Decode(&reqArticle); err != nil {
 		http.Error(w, "fail to encode json\n", http.StatusInternalServerError)
+		return
 	}
 
 	article := reqArticle
