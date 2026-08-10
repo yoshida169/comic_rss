@@ -78,18 +78,11 @@ func ArticleDetailHandler(w http.ResponseWriter, req *http.Request) {
 }
 
 func PostCommentHandler(w http.ResponseWriter, req *http.Request) {
-	if req.Method == http.MethodPost {
-		io.WriteString(w, "Posting Comment...\n")
-	} else {
-		http.Error(w, "Invalid Method", http.StatusMethodNotAllowed)
+	var reqComment models.Comment
+	if err := json.NewDecoder(req.Body).Decode(&reqComment); err != nil {
+		http.Error(w, "fail to decode json\n", http.StatusBadRequest)
 	}
 
-	comment := models.Comment1
-	jsonData, err := json.Marshal(comment)
-	if err != nil {
-		http.Error(w, "fail to encode json\n", http.StatusInternalServerError)
-		return
-	}
-
-	w.Write(jsonData)
+	comment := reqComment
+	json.NewEncoder(w).Encode(comment)
 }
