@@ -60,7 +60,7 @@ func ArticleListHandler(w http.ResponseWriter, req *http.Request) {
 	log.Println(page)
 
 	articleList := []models.Article{models.Article1, models.Article2}
-	json.NewDecoder(w).Encode(articleList)
+	json.NewEncoder(w).Encode(articleList)
 }
 
 // GET /article/:id
