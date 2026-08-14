@@ -9,6 +9,13 @@ type Comment struct {
 	CreatedAt time.Time `json:"created_at"`
 }
 
+type User struct {
+	ID           int       `json:"id"`
+	UserName     string    `json:"user_name"`
+	PasswordHash string    `json:"-"`
+	CreatedAt    time.Time `json:"created_at"`
+}
+
 type Article struct {
 	ID          int       `json:"article_id"`
 	Title       string    `json:"title"`
