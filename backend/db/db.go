@@ -2,26 +2,29 @@ package db
 
 import (
 	"database/sql"
+	"time"
 
-	_ "modernc.org/sqlite"
+	_ "github.com/go-sql-driver/mysql"
 )
 
 const createUsersTable = `
 CREATE TABLE IF NOT EXISTS users (
-	id INTEGER PRIMARY KEY AUTOINCREMENT,
-	user_name TEXT NOT NULL UNIQUE,
-	password_hash TEXT NOT NULL,
+	id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+	user_name VARCHAR(100) NOT NULL UNIQUE,
+	password_hash VARCHAR(255) NOT NULL,
 	created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 `
 
-// Open opens (and creates if necessary) the sqlite database at path,
-// and ensures the schema exists.
-func Open(path string) (*sql.DB, error) {
-	database, err := sql.Open("sqlite", path)
+// Open connects to MySQL using the given DSN
+// (e.g. "user:pass@tcp(127.0.0.1:3306)/dbname?parseTime=true"),
+// verifies connectivity, and ensures the schema exists.
+func Open(dsn string) (*sql.DB, error) {
+	database, err := sql.Open("mysql", dsn)
 	if err != nil {
 		return nil, err
 	}
+	database.SetConnMaxLifetime(3 * time.Minute)
 
 	if err := database.Ping(); err != nil {
 		database.Close()

@@ -21,6 +21,23 @@ func PingHandler(w http.ResponseWriter, req *http.Request) {
 	json.NewEncoder(w).Encode(map[string]string{"message": "pong"})
 }
 
+// GET /health/db
+func DBHealthHandler(w http.ResponseWriter, req *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	if DB == nil {
+		w.WriteHeader(http.StatusServiceUnavailable)
+		json.NewEncoder(w).Encode(map[string]string{"status": "error", "error": "db not configured"})
+		return
+	}
+	if err := DB.PingContext(req.Context()); err != nil {
+		log.Printf("db ping failed: %v", err)
+		w.WriteHeader(http.StatusServiceUnavailable)
+		json.NewEncoder(w).Encode(map[string]string{"status": "error", "error": "db ping failed"})
+		return
+	}
+	json.NewEncoder(w).Encode(map[string]string{"status": "ok"})
+}
+
 // POST /article
 func PostArticleHandler(w http.ResponseWriter, req *http.Request) {
 	var reqArticle models.Article
