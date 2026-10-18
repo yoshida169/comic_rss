@@ -3,12 +3,38 @@ package main
 import (
 	"comic-rss-backend/db"
 	"comic-rss-backend/handlers"
+	"fmt"
 	"log"
 	"net/http"
 	"os"
 
 	"github.com/gorilla/mux"
+	"github.com/joho/godotenv"
 )
+
+// dbDSN returns the MySQL DSN. DB_DSN takes precedence; otherwise it is built
+// from USERNAME / USERPASS / DATABASE in the repository-root .env file
+// (the same variables docker-compose.yaml uses). DB_HOST overrides the
+// default host:port of 127.0.0.1:3306.
+func dbDSN() (string, error) {
+	if dsn := os.Getenv("DB_DSN"); dsn != "" {
+		return dsn, nil
+	}
+
+	// Read into a map instead of Load so that shell variables such as zsh's
+	// USERNAME cannot shadow the values in .env.
+	env, err := godotenv.Read("../.env")
+	if err != nil {
+		return "", fmt.Errorf("DB_DSN is not set and .env could not be read: %w", err)
+	}
+
+	host := os.Getenv("DB_HOST")
+	if host == "" {
+		host = "127.0.0.1:3306"
+	}
+	return fmt.Sprintf("%s:%s@tcp(%s)/%s?parseTime=true",
+		env["USERNAME"], env["USERPASS"], host, env["DATABASE"]), nil
+}
 
 func newRouter() http.Handler {
 	r := mux.NewRouter()
@@ -27,9 +53,9 @@ func newRouter() http.Handler {
 }
 
 func main() {
-	dsn := os.Getenv("DB_DSN")
-	if dsn == "" {
-		log.Fatal("DB_DSN is not set (e.g. user:pass@tcp(127.0.0.1:3306)/dbname?parseTime=true)")
+	dsn, err := dbDSN()
+	if err != nil {
+		log.Fatal(err)
 	}
 
 	database, err := db.Open(dsn)
