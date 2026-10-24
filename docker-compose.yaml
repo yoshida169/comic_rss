@@ -1,22 +1,16 @@
 services:
-  mysql:
-    image: mysql:8.0
+  postgres:
+    image: postgres:17
     container_name: db-for-go
-    command:
-      - --character-set-server=utf8mb4
-      - --collation-server=utf8mb4_unicode_ci
-      - --sql-mode=ONLY_FULL_GROUP_BY,NO_ENGINE_SUBSTITUTION
     environment:
-      MYSQL_ROOT_USER: ${ROOTUSER}
-      MYSQL_ROOT_PASSWORD: ${ROOTPASS}
-      MYSQL_DATABASE: ${DATABASE}
-      MYSQL_USER: ${USERNAME}
-      MYSQL_PASSWORD: ${USERPASS}
+      POSTGRES_DB: ${DATABASE}
+      POSTGRES_USER: ${USERNAME}
+      POSTGRES_PASSWORD: ${USERPASS}
       TZ: 'Asia/Tokyo'
     ports:
-      - "3306:3306"
+      - "5432:5432"
     volumes:
-      - db-volume:/var/lib/mysql
+      - db-volume:/var/lib/postgresql/data
 
 volumes:
   db-volume:
