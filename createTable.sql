@@ -1,18 +1,17 @@
-# 記事データを格納するためのテーブル
+-- 記事データを格納するためのテーブル
 create table if not exists articles (
-  article_id integer unsigned auto_increment primary key,
+  article_id serial primary key,
   title varchar(100) not null,
   contents text not null,
   username varchar(100) not null,
   nice integer not null,
-  created_at datetime
+  created_at timestamp
 );
 
-# コメントデータを格納するためのテーブル
+-- コメントデータを格納するためのテーブル
 create table if not exists comments (
-  comment_id integer unsigned auto_increment primary key,
-  article_id integer unsigned not null,
+  comment_id serial primary key,
+  article_id integer not null references articles(article_id),
   message text not null,
-  created_at datetime,
-  foreign key (article_id) references articles(article_id)
+  created_at timestamp
 );
