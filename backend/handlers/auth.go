@@ -51,7 +51,7 @@ func LoginHandler(w http.ResponseWriter, req *http.Request) {
 	var id int
 	var passwordHash string
 	err := DB.QueryRow(
-		"SELECT id, password_hash FROM users WHERE user_name = ?",
+		"SELECT id, password_hash FROM users WHERE user_name = $1",
 		reqBody.UserName,
 	).Scan(&id, &passwordHash)
 

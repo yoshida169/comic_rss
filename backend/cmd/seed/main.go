@@ -29,7 +29,7 @@ func main() {
 		}
 
 		_, err = database.Exec(
-			`INSERT INTO users (user_name, password_hash) VALUES (?, ?)
+			`INSERT INTO users (user_name, password_hash) VALUES ($1, $2)
 			 ON CONFLICT(user_name) DO UPDATE SET password_hash = excluded.password_hash`,
 			u.UserName, string(hash),
 		)
