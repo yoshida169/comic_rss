@@ -6,16 +6,17 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"net/url"
 	"os"
 
 	"github.com/gorilla/mux"
 	"github.com/joho/godotenv"
 )
 
-// dbDSN returns the MySQL DSN. DB_DSN takes precedence; otherwise it is built
+// dbDSN returns the PostgreSQL DSN. DB_DSN takes precedence; otherwise it is built
 // from USERNAME / USERPASS / DATABASE in the repository-root .env file
 // (the same variables docker-compose.yaml uses). DB_HOST overrides the
-// default host:port of 127.0.0.1:3306.
+// default host:port of 127.0.0.1:5432.
 func dbDSN() (string, error) {
 	if dsn := os.Getenv("DB_DSN"); dsn != "" {
 		return dsn, nil
@@ -30,10 +31,16 @@ func dbDSN() (string, error) {
 
 	host := os.Getenv("DB_HOST")
 	if host == "" {
-		host = "127.0.0.1:3306"
+		host = "127.0.0.1:5432"
 	}
-	return fmt.Sprintf("%s:%s@tcp(%s)/%s?parseTime=true",
-		env["USERNAME"], env["USERPASS"], host, env["DATABASE"]), nil
+	u := url.URL{
+		Scheme:   "postgres",
+		User:     url.UserPassword(env["USERNAME"], env["USERPASS"]),
+		Host:     host,
+		Path:     "/" + env["DATABASE"],
+		RawQuery: "sslmode=disable",
+	}
+	return u.String(), nil
 }
 
 func newRouter() http.Handler {
