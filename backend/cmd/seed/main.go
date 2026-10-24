@@ -16,7 +16,12 @@ var seedUsers = []struct {
 }
 
 func main() {
-	database, err := db.Open("comic_rss.db")
+	dsn, err := db.DSN()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	database, err := db.Open(dsn)
 	if err != nil {
 		log.Fatalf("failed to open database: %v", err)
 	}

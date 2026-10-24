@@ -3,45 +3,11 @@ package main
 import (
 	"comic-rss-backend/db"
 	"comic-rss-backend/handlers"
-	"fmt"
 	"log"
 	"net/http"
-	"net/url"
-	"os"
 
 	"github.com/gorilla/mux"
-	"github.com/joho/godotenv"
 )
-
-// dbDSN returns the PostgreSQL DSN. DB_DSN takes precedence; otherwise it is built
-// from USERNAME / USERPASS / DATABASE in the repository-root .env file
-// (the same variables docker-compose.yaml uses). DB_HOST overrides the
-// default host:port of 127.0.0.1:5432.
-func dbDSN() (string, error) {
-	if dsn := os.Getenv("DB_DSN"); dsn != "" {
-		return dsn, nil
-	}
-
-	// Read into a map instead of Load so that shell variables such as zsh's
-	// USERNAME cannot shadow the values in .env.
-	env, err := godotenv.Read("../.env")
-	if err != nil {
-		return "", fmt.Errorf("DB_DSN is not set and .env could not be read: %w", err)
-	}
-
-	host := os.Getenv("DB_HOST")
-	if host == "" {
-		host = "127.0.0.1:5432"
-	}
-	u := url.URL{
-		Scheme:   "postgres",
-		User:     url.UserPassword(env["USERNAME"], env["USERPASS"]),
-		Host:     host,
-		Path:     "/" + env["DATABASE"],
-		RawQuery: "sslmode=disable",
-	}
-	return u.String(), nil
-}
 
 func newRouter() http.Handler {
 	r := mux.NewRouter()
@@ -60,7 +26,7 @@ func newRouter() http.Handler {
 }
 
 func main() {
-	dsn, err := dbDSN()
+	dsn, err := db.DSN()
 	if err != nil {
 		log.Fatal(err)
 	}
