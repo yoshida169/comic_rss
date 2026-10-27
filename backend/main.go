@@ -2,9 +2,12 @@ package main
 
 import (
 	"comic-rss-backend/handlers"
+	"database/sql"
+	"fmt"
 	"net/http"
 
 	"github.com/gorilla/mux"
+	_ "github.com/jackc/pgx/v5/stdlib"
 )
 
 func newRouter() http.Handler {
@@ -23,5 +26,20 @@ func newRouter() http.Handler {
 }
 
 func main() {
+	dbUser := "docker"
+	dbPassword := "docker"
+	dbDatabase := "sampledb"
+	dbConn := fmt.Sprintf("postgres://%s:%s@127.0.0.1:5432/%s?sslmode=disable", dbUser, dbPassword, dbDatabase)
 
+	db, err := sql.Open("pgx", dbConn)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	defer db.Close()
+	if err := db.Ping(); err != nil {
+		fmt.Println(err)
+	} else {
+		fmt.Println("connect to DB")
+	}
 }
