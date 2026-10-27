@@ -15,12 +15,6 @@ func HelloHandler(w http.ResponseWriter, req *http.Request) {
 	io.WriteString(w, "Hello world\n")
 }
 
-// GET /ping
-func PingHandler(w http.ResponseWriter, req *http.Request) {
-	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(map[string]string{"message": "pong"})
-}
-
 // GET /health/db
 func DBHealthHandler(w http.ResponseWriter, req *http.Request) {
 	w.Header().Set("Content-Type", "application/json")

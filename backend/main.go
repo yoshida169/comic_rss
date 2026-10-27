@@ -13,7 +13,6 @@ func newRouter() http.Handler {
 	r := mux.NewRouter()
 
 	r.HandleFunc("/hello", handlers.HelloHandler).Methods(http.MethodGet)
-	r.HandleFunc("/ping", handlers.PingHandler).Methods(http.MethodGet)
 	r.HandleFunc("/health/db", handlers.DBHealthHandler).Methods(http.MethodGet)
 	r.HandleFunc("/article", handlers.PostArticleHandler)
 	r.HandleFunc("/article/list", handlers.ArticleListHandler)
