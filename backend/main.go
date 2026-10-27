@@ -1,9 +1,7 @@
 package main
 
 import (
-	"comic-rss-backend/db"
 	"comic-rss-backend/handlers"
-	"log"
 	"net/http"
 
 	"github.com/gorilla/mux"
@@ -25,19 +23,5 @@ func newRouter() http.Handler {
 }
 
 func main() {
-	dsn, err := db.DSN()
-	if err != nil {
-		log.Fatal(err)
-	}
 
-	database, err := db.Open(dsn)
-	if err != nil {
-		log.Fatalf("failed to open database: %v", err)
-	}
-	defer database.Close()
-
-	handlers.SetDB(database)
-
-	log.Println("starting server on :8080")
-	log.Fatal(http.ListenAndServe(":8080", newRouter()))
 }
