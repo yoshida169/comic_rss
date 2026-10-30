@@ -7,7 +7,7 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
-	_ "github.com/jackc/pgx/v5/stdlib"
+	_ "github.com/lib/pq"
 )
 
 func newRouter() http.Handler {
@@ -31,7 +31,7 @@ func main() {
 	dbDatabase := "sampledb"
 	dbConn := fmt.Sprintf("postgres://%s:%s@127.0.0.1:5432/%s?sslmode=disable", dbUser, dbPassword, dbDatabase)
 
-	db, err := sql.Open("pgx", dbConn)
+	db, err := sql.Open("postgres", dbConn)
 	if err != nil {
 		fmt.Println(err)
 		return
