@@ -4,7 +4,7 @@ variable "project" {
   default     = "comic-rss"
 }
 
-variable "environment" {
+variable "env" {
   description = "環境名 (dev / stg / prod)"
   type        = string
   default     = "dev"
