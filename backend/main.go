@@ -2,6 +2,7 @@ package main
 
 import (
 	"comic-rss-backend/handlers"
+	"comic-rss-backend/models"
 	"database/sql"
 	"fmt"
 	"net/http"
@@ -48,4 +49,18 @@ func main() {
 		return
 	}
 	defer rows.Close()
+
+	articleArray := make([]models.Article, 0)
+	for rows.Next() {
+		var article models.Article
+		err := rows.Scan(&article.Title, &article.Contents, &article.Username, &article.NiceNum)
+
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
+		articleArray = append(articleArray, article)
+	}
+
+	fmt.Printf("%+v\n", articleArray)
 }
