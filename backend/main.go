@@ -53,7 +53,7 @@ func main() {
 	articleArray := make([]models.Article, 0)
 	for rows.Next() {
 		var article models.Article
-		err := rows.Scan(&article.Title, &article.Contents, &article.Username, &article.NiceNum)
+		err := rows.Scan(&article.Title, &article.Contents, &article.UserName, &article.NiceNum)
 
 		if err != nil {
 			fmt.Println(err)
