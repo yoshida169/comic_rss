@@ -39,10 +39,15 @@ func main() {
 	}
 	defer db.Close()
 
+	// const sqlStr = `
+	// 	select title, contents, username, nice
+	// 	from articles;
+	// `
 	const sqlStr = `
-		select title, contents, username, nice
-		from articles;
+	select *
+	from articles;
 	`
+
 	rows, err := db.Query(sqlStr)
 	if err != nil {
 		fmt.Println(err)
