@@ -61,6 +61,18 @@ func TestRouter(t *testing.T) {
 			wantStatus: http.StatusBadRequest,
 		},
 		{
+			name:       "GET /article/1",
+			method:     http.MethodGet,
+			path:       "/article/1",
+			wantStatus: http.StatusOK,
+		},
+		{
+			name:       "POST /article/1 はメソッド不一致で405",
+			method:     http.MethodPost,
+			path:       "/article/1",
+			wantStatus: http.StatusMethodNotAllowed,
+		},
+		{
 			name:       "POST /article/nice (JSONあり)",
 			method:     http.MethodPost,
 			path:       "/article/nice",
