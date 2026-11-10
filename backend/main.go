@@ -18,7 +18,7 @@ func newRouter() http.Handler {
 	r.HandleFunc("/health/db", handlers.DBHealthHandler).Methods(http.MethodGet)
 	r.HandleFunc("/article", handlers.PostArticleHandler)
 	r.HandleFunc("/article/list", handlers.ArticleListHandler)
-	r.HandleFunc("/article/{id: [0-9]+}", handlers.ArticleDetailHandler).Methods(http.MethodGet)
+	r.HandleFunc("/article/{id:[0-9]+}", handlers.ArticleDetailHandler).Methods(http.MethodGet)
 	r.HandleFunc("/article/nice", handlers.PostNiceHandler)
 	r.HandleFunc("/comment", handlers.PostCommentHandler)
 	r.HandleFunc("/login", handlers.LoginHandler).Methods(http.MethodPost)
