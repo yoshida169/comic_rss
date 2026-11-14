@@ -39,13 +39,12 @@ func main() {
 	}
 	defer db.Close()
 
-	// const sqlStr = `
-	// 	select title, contents, username, nice
-	// 	from articles;
-	// `
+	// クエリの定義
+	articleID := 1
 	const sqlStr = `
-	select *
-	from articles;
+		select *
+		from articles
+		where article_id = ?;
 	`
 
 	rows, err := db.Query(sqlStr)
