@@ -47,12 +47,11 @@ func main() {
 		where article_id = $1;
 	`
 
-	rows, err := db.Query(sqlStr, articleID)
-	if err != nil {
+	row := db.QueryRow(sqlStr, articleID)
+	if err := row.Err(); err != nil {
 		fmt.Println(err)
 		return
 	}
-	defer rows.Close()
 
 	articleArray := make([]models.Article, 0)
 	for rows.Next() {
