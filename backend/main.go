@@ -44,10 +44,10 @@ func main() {
 	const sqlStr = `
 		select *
 		from articles
-		where article_id = ?;
+		where article_id = $1;
 	`
 
-	rows, err := db.Query(sqlStr)
+	rows, err := db.Query(sqlStr, articleID)
 	if err != nil {
 		fmt.Println(err)
 		return
