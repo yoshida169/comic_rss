@@ -53,7 +53,6 @@ func main() {
 		return
 	}
 
-	articleArray := make([]models.Article, 0)
 	var article models.Article
 	var createdTime sql.NullTime
 
@@ -67,5 +66,5 @@ func main() {
 		article.CreatedAt = createdTime.Time
 	}
 
-	fmt.Printf("%+v\n", articleArray)
+	fmt.Printf("%+v\n", article)
 }
