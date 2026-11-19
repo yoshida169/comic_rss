@@ -54,22 +54,17 @@ func main() {
 	}
 
 	articleArray := make([]models.Article, 0)
-	for rows.Next() {
-		var article models.Article
-		var createdTime sql.NullTime
+	var article models.Article
+	var createdTime sql.NullTime
 
-		err := rows.Scan(&article.ID, &article.Title, &article.Contents,
-			&article.UserName, &article.NiceNum, &createdTime)
+	err = row.Scan(&article.ID, &article.Title, &article.Contents, &article.UserName, &article.NiceNum, &createdTime)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
 
-		if createdTime.Valid {
-			article.CreatedAt = createdTime.Time
-		}
-
-		if err != nil {
-			fmt.Println(err)
-			return
-		}
-		articleArray = append(articleArray, article)
+	if createdTime.Valid {
+		article.CreatedAt = createdTime.Time
 	}
 
 	fmt.Printf("%+v\n", articleArray)
